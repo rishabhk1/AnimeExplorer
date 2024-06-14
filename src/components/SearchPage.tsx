@@ -1,12 +1,27 @@
 import {Input} from '../../@/components/ui/input'
 import {Button} from '../../@/components/ui/button'
 import { Loader2, Search, X } from 'lucide-react';
-import { useRef, useState} from 'react';
-import { Checkbox } from "../../@/components/ui/checkbox"
+import { ChangeEvent, useRef, useState} from 'react';
+import { Checkbox} from "../../@/components/ui/checkbox"
 import { useToast } from "../../@/components/ui/use-toast" 
 import { Toaster } from "../../@/components/ui/toaster"
+import { CheckedState } from 'shadcn';
 import Loading from './Loading';
 
+interface AnimeData {
+    id: string;
+    score: number;
+    metadata: {
+      anime_id: string;
+      name: string;
+      genre: string;
+      type: string;
+      episodes: number;
+      rating: number;
+      members: string;
+      image: string;
+    };
+  }
 
 const SearchPage = () => {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -14,8 +29,8 @@ const SearchPage = () => {
     const [query, setQuery] = useState<string>('');
     const [animeList, setAnimeList] = useState([]);
     const [searchDone, setSearchDone] = useState(false);
-    const [isMovie, setIsMovie] = useState<boolean>(true);
-    const [isTV, setIsTV] = useState<boolean>(true);
+    const [isMovie, setIsMovie] = useState(true);
+    const [isTV, setIsTV] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [episodeRange, setEpisodeRange] = useState({ min: '1', max: '1000' });
     const [ratingRange, setRatingRange] = useState({ min: '1', max: '10' });
@@ -25,16 +40,16 @@ const SearchPage = () => {
     const floatRegex = /^[+]?[0-9]*\.?[0-9]+$/;
     const integerRegex = /^[+]?[0-9]+$/;
 
-    const handleEpisodeRangeChange = (e, field) => {
+    const handleEpisodeRangeChange = (e: ChangeEvent<HTMLInputElement>, field: string) => {
         setEpisodeRange({ ...episodeRange, [field]: (e.target.value) });
       };
     
-      const handleRatingRangeChange = (e, field) => {
+      const handleRatingRangeChange = (e: ChangeEvent<HTMLInputElement>, field: string) => {
         setRatingRange({ ...ratingRange, [field]: (e.target.value) });
       };
 
     const APIcall = async () => {
-        const typeFilter = (isMovie^isTV)?(isMovie?`AND type = 'Movie'`:`AND type = 'TV'`):''
+        const typeFilter = (+isMovie^+isTV)?(isMovie?`AND type = 'Movie'`:`AND type = 'TV'`):''
         try {
             
             if(query.trim().length === 0){
@@ -137,14 +152,14 @@ const SearchPage = () => {
                 <label className="flex items-center space-x-2">
                     <Checkbox
                         checked={isMovie}
-                        onCheckedChange={(checked) => setIsMovie(checked)}
+                        onCheckedChange={(checked:CheckedState) => setIsMovie(checked)}
                     />
                     <span>Movie</span>
                 </label>
                 <label className="flex items-center space-x-2">
                     <Checkbox
                         checked={isTV}
-                        onCheckedChange={(checked) => setIsTV(checked)}
+                        onCheckedChange={(checked:CheckedState) => setIsTV(checked)}
                     />
                     <span>TV</span>
                 </label>
@@ -203,8 +218,8 @@ const SearchPage = () => {
         {animeList.length>0 && <div className='py-4 divide-y divide-zinc-100 bg-white  rounded-b-md'>
         
                 {
-                     animeList.map((anime) => (
-                        <div key={anime.metadata.id} className='mx-auto shadow-md py-4 px-8 flex space-x-4'>
+                     animeList.map((anime: AnimeData) => (
+                        <div key={anime.metadata.anime_id} className='mx-auto shadow-md py-4 px-8 flex space-x-4'>
                             <div className='relative flex items-center bg-zinc-100 rounded-lg h-50 w-40 '>
                                 <img src={anime.metadata.image} alt="Anime Image" className='h-50 w-40 ' />
                             </div>
