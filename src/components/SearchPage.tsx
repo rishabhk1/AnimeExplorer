@@ -6,7 +6,8 @@ import { Checkbox} from "../../@/components/ui/checkbox"
 import { useToast } from "../../@/components/ui/use-toast" 
 import { Toaster } from "../../@/components/ui/toaster"
 import Loading from './Loading';
-import { CheckedState } from '@radix-ui/react-checkbox';
+
+type CheckedState = boolean ;
 
 interface AnimeData {
     id: string;
