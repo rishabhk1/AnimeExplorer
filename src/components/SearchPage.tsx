@@ -5,8 +5,8 @@ import { ChangeEvent, useRef, useState} from 'react';
 import { Checkbox} from "../../@/components/ui/checkbox"
 import { useToast } from "../../@/components/ui/use-toast" 
 import { Toaster } from "../../@/components/ui/toaster"
-import { CheckedState } from 'shadcn';
 import Loading from './Loading';
+import { CheckedState } from '@radix-ui/react-checkbox';
 
 interface AnimeData {
     id: string;
