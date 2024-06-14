@@ -76,7 +76,7 @@ const SearchPage = () => {
                   return;
             }
             setIsSearching(true);
-          const response = await fetch('http://localhost:8787', {
+          const response = await fetch('https://anime_search.rishabhk1.workers.dev', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
